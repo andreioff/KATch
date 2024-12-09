@@ -101,6 +101,9 @@ object Runner {
           case "backward" =>
             val result = Bisim.backward(v)
             if (!Options.suppressOutput) println(s"Backward at $path:${line + 1}: ${summarize(SP.pretty(result))}")
+          case "inoutmap" =>
+            TV.vizSPP(Bisim.ε(v))
+            if (!Options.suppressOutput) println(s"Inoutmap at $path:${line + 1}: ${TV.output()}")
         }
         env
       case Stmt.Let(x, e) => env + (x -> eval(env, e))

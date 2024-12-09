@@ -176,8 +176,10 @@ object Parser {
   // Parses a graphviz statement
   def graphvizStmt[$: P]: P[Stmt.Graphviz] = P("graphviz" ~ "\"" ~ CharIn("a-zA-Z0-9./_\\-").rep(1).! ~ "\"" ~ exprNK).map { case (path, e) => Stmt.Graphviz(path, Expr.NKExpr(e)) }
 
-  // Parses a forward/backward statement
-  def runStmt[$: P]: P[Stmt] = P("forward" ~ exprNK).map { e => Stmt.Run("forward", Expr.NKExpr(e)) } | P("backward" ~ exprNK).map { e => Stmt.Run("backward", Expr.NKExpr(e)) }
+  // Parses a forward/backward/inoutmap statement
+  def runStmt[$: P]: P[Stmt] = P("forward" ~ exprNK).map { e => Stmt.Run("forward", Expr.NKExpr(e)) } |
+    P("backward" ~ exprNK).map { e => Stmt.Run("backward", Expr.NKExpr(e)) } |
+    P("inoutmap" ~ exprNK).map { e => Stmt.Run("inoutmap", Expr.NKExpr(e)) }
 
   // Parses a ValExpr
   def valExpr[$: P]: P[SVal] = P(integer.map(Left.apply) | varName.map(Right.apply))
